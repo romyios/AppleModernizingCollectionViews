@@ -6,6 +6,7 @@ Sample showing how we might create a search UI using a diffable data source
 */
 
 import UIKit
+import SwiftUI
 
 class MountainsViewController: UIViewController {
 
@@ -23,6 +24,7 @@ class MountainsViewController: UIViewController {
         navigationItem.title = "Mountains Search"
         configureHierarchy()
         configureDataSource()
+        mountainsCollectionView.delegate = self
         performQuery(with: nil)
     }
 }
@@ -110,5 +112,18 @@ extension MountainsViewController {
 extension MountainsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         performQuery(with: searchText)
+    }
+}
+
+extension MountainsViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil) {
+            let viewController = UIHostingController(rootView: Text("hey"))
+            viewController.preferredContentSize = CGSize(width: 200, height: 200)
+            return viewController
+        } actionProvider: { menu in
+            return nil
+        }
+
     }
 }
